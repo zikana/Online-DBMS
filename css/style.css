@@ -1,0 +1,41 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+html{
+	scroll-behavior: smooth;
+}
+header{
+	background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url(../images/mac.jpeg);
+	background-size: cover;
+	background-attachment: fixed;
+	border-bottom: 0.1rem solid dodgerblue;
+}
+.back{
+	margin-right: 2%;
+}
+@media(max-width: 700px){
+	.back{
+		margin-right: 0;
+	}
+}
+
+.welcome{
+	padding-bottom: 5rem;
+	background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url(../images/mac.jpeg);
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+#modal{
+	height: 100vh;
+	background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+}
+
+#modal-body{
+	margin-top: 10rem;
+}
+#close:hover{
+	cursor: pointer;
+	color: #000000;
+}
