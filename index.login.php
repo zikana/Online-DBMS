@@ -1,4 +1,137 @@
+<?php
+include_once 'includes/db.php';
+?>
+<?php
+session_start();
+?>
+
+<!--loging verification code goes here-->
+
+<?php
+
+
+if (isset($_POST['login'])) {
+
+  $email = mysqli_real_escape_string($conn,  $_POST['email']);
+  $pwd = mysqli_real_escape_string($conn,  $_POST['pwd']);
+
+
+$pwd2 = $pwd.$pwd;
+  
+  /*empty spaces handlellers*/
+  if (empty($email) ||empty($pwd2)){
+   echo '<script> alert("The fields are empty")</script>';
+    exit();
+  }else{
+    $sql = "SELECT * FROM user WHERE 	email = '$email'";
+    $output = mysqli_query($conn , $sql);
+    $check_output = mysqli_num_rows($output);
+    if ($check_output <1) {
+   echo '<script> alert("You are not yet registered....please signup")</script>';
+    
+    }elseif ($row = mysqli_fetch_assoc($output)){
+        # dehashing the password
+      $hashedpwdcheck = password_verify($pwd2, $row['password']);
+       if ($hashedpwdcheck == false){
+          echo '<script> alert("Your password is not correct")</script>';
+         }elseif ($hashedpwdcheck == true){
+          #login the user
+          $_SESSION['id'] =$row['fid'];
+          $_SESSION['useremail'] = $row['email'];
+          $_SESSION['userpwd'] = $row['password'];
+           $_SESSION['username'] = $row['username'];
+          header("location: index.log.php?login=success");
+          /*exit();*/
+        }
+      }
+    
+    }
+  }
+?>
+
+
+
+<!-- signg up code goes here -->
+
+
+
+<!-- signg up code goes here -->
+
+<?php
+$errors = array();
+if (isset($_POST['signup'])) {
+
+	$email = mysqli_real_escape_string($conn,  $_POST['email']);
+	$pwd = mysqli_real_escape_string($conn,  $_POST['pwd']);
+	$pwd2 = mysqli_real_escape_string($conn,  $_POST['pwd2']);
+	
+	/*empty spaces handlellers*/
+	if (empty($email) || empty($pwd) || empty($pwd2)){
+		header("location: singup.php?singup=empty");
+		
+		}
+		//password
+		// if($pwd == $pwd2){
+		// 	echo "<script>alert('passwords are not the same')</script>";
+		// 	exit();
+		// }
+
+	//validating email
+	if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		header("location: singup.php?singup=email");
+		
+		}
+
+	//checking if user exists
+		$sql = "SELECT * FROM users WHERE email='$email'";
+				$result = mysqli_query($conn, $sql);
+				$resultcheck = mysqli_num_rows($result);
+
+				if ($resultcheck > 0) {
+					echo "<script>alert('Sorry the Email has been regsyered by someone else')</script>";
+					exit();
+				}
+	if (count($errors) == 0) {
+
+
+$pwd3 = $pwd.$pwd2;
+
+echo $pwd3;
+	$hashformat = "$2y$10$";
+	$salt = "ineedsomecrazystrings22";
+	$hashf_and_salt = $hashformat . $salt;
+	$Rpwd_pwd = crypt($pwd3,$hashf_and_salt);
+
+    /*inserting data*/
+	$query = "INSERT INTO users(email,password,username)";
+	$query .= "VALUES('$email','$Rpwd_pwd','')";
+
+	$test = mysqli_query($conn,$query);
+
+	$_SESSION['email'] = $email;
+	$_SESSION['success'] = "Welcome to Chisfarm";
+	if (!$test){
+header("location: index.login.php?register=not done".mysqli_Error($conn));
+}
+else 
+{
+	header("location: index.php?register=success!");
+
+
+}
+
+	}
+
+	}
+?>
+
+
+
+
+
 <!DOCTYPE html>
+
+
 <html>
 <head>
 	<title>online| DBMS</title>
