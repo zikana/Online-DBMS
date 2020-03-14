@@ -9,7 +9,7 @@ header{
 	background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.6)), url(../images/mac.jpeg);
 	background-size: cover;
 	background-attachment: fixed;
-	border-bottom: 0.1rem solid dodgerblue;
+	border-bottom: 0.1rem solid yellow;
 }
 .back{
 	margin-right: 2%;
